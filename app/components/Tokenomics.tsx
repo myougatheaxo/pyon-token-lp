@@ -86,7 +86,7 @@ export function Tokenomics() {
                 <div className="mt-8 pt-6 border-t border-white/10">
                   <div className="flex items-center justify-between">
                     <span className="text-[#A0ADB8]">Total Supply</span>
-                    <span className="text-xl sm:text-2xl font-bold text-white font-mono">1,000,000,000</span>
+                    <span className="text-xl sm:text-2xl font-bold text-white font-mono">10,000,000</span>
                   </div>
                 </div>
               </div>
