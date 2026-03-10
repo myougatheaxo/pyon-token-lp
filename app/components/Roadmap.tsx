@@ -81,7 +81,7 @@ export function Roadmap() {
                   />
                 </div>
                 {/* 黒半透明オーバーレイ */}
-                <div className="absolute inset-0 bg-black/80" />
+                <div className="absolute inset-0 bg-black/90" />
                 {/* 下部グラデーション */}
                 <div className="absolute inset-0 bg-gradient-to-t from-[#0D0D1A]/80 via-transparent to-transparent" />
                 {/* Active glow */}
