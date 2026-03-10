@@ -54,7 +54,7 @@ function PhaseCard({ phase }: { phase: (typeof phases)[0] }) {
     <div
       ref={ref}
       onMouseEnter={onMouseEnter}
-      className={`relative group ${phase.status === 'active' ? 'scale-105' : ''}`}
+      className={`relative group water-float-btn ${phase.status === 'active' ? 'scale-105' : ''}`}
     >
       <div className={`relative h-full rounded-2xl overflow-hidden border transition-all duration-300 ${
         phase.status === 'active'

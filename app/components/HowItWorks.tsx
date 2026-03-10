@@ -36,7 +36,7 @@ function StepCard({ step, isLast }: { step: (typeof steps)[0]; isLast: boolean }
   const { ref, onMouseEnter, rippleEl } = useWaterRipple();
 
   return (
-    <div ref={ref} onMouseEnter={onMouseEnter} className="relative group">
+    <div ref={ref} onMouseEnter={onMouseEnter} className="relative group water-float-btn">
       <div className="relative h-full rounded-2xl overflow-hidden border border-white/10 hover:border-white/20 transition-all duration-300">
         {/* 背景画像 */}
         <div className="absolute inset-0">

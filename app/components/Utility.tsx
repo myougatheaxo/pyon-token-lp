@@ -56,7 +56,7 @@ function UtilityCard({ card }: { card: (typeof cards)[0] }) {
     <div
       ref={ref}
       onMouseEnter={card.available ? onMouseEnter : undefined}
-      className={`group relative rounded-2xl ${card.available ? '' : 'opacity-50'}`}
+      className={`group relative rounded-2xl water-float-btn ${card.available ? '' : 'opacity-50'}`}
     >
       <div className={`relative p-6 rounded-2xl border border-white/10 overflow-hidden transition-all duration-300 ${card.available ? 'hover:border-white/20 hover:scale-105' : ''}`}>
         {/* 背景画像 */}
