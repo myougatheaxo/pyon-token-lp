@@ -1,54 +1,54 @@
 import { useWaterRipple } from './useWaterRipple';
+import { useLanguage, T } from './LanguageContext';
 
 const BASE = '/pyon-token-lp/utility';
 
-const phases = [
+const phases: {
+  phase: string; title: T; status: string;
+  bg: string; bgPos: string; iconPos: string;
+  items: T[];
+}[] = [
   {
     phase: 'Phase 1',
-    title: 'Token Launch',
+    title: { en: 'Token Launch', ja: 'トークンローンチ' },
     status: 'active',
-    bg: `${BASE}/phase1.png`,
-    bgPos: '50% 15%',
-    iconPos: '50% 10%',
+    bg: `${BASE}/phase1.png`, bgPos: '50% 15%', iconPos: '50% 10%',
     items: [
-      'Smart contract deployment',
-      'Initial liquidity provision',
-      'Community airdrop',
-      'Exchange listings',
+      { en: 'Smart contract deployment',  ja: 'スマートコントラクトのデプロイ' },
+      { en: 'Initial liquidity provision', ja: '初期流動性の提供' },
+      { en: 'Community airdrop',           ja: 'コミュニティへのエアドロップ' },
+      { en: 'Exchange listings',           ja: '取引所上場' },
     ],
   },
   {
     phase: 'Phase 2',
-    title: 'AI Integration + Goods',
+    title: { en: 'AI Integration + Goods', ja: 'AI統合 + グッズ' },
     status: 'upcoming',
-    bg: `${BASE}/phase2.png`,
-    bgPos: '50% 18%',
-    iconPos: '50% 12%',
+    bg: `${BASE}/phase2.png`, bgPos: '50% 18%', iconPos: '50% 12%',
     items: [
-      'Enhanced AI interactions',
-      'Merchandise store',
-      'NFT collection',
-      'Staking rewards',
+      { en: 'Enhanced AI interactions', ja: 'AI会話の強化' },
+      { en: 'Merchandise store',         ja: 'グッズショップ開設' },
+      { en: 'NFT collection',            ja: 'NFTコレクション' },
+      { en: 'Staking rewards',           ja: 'ステーキング報酬' },
     ],
   },
   {
     phase: 'Phase 3',
-    title: 'Multi-Character Ecosystem',
+    title: { en: 'Multi-Character Ecosystem', ja: 'マルチキャラクターエコシステム' },
     status: 'future',
-    bg: `${BASE}/phase3.png`,
-    bgPos: '50% 15%',
-    iconPos: '50% 10%',
+    bg: `${BASE}/phase3.png`, bgPos: '50% 15%', iconPos: '50% 10%',
     items: [
-      'New AI characters',
-      'Cross-character events',
-      'DAO governance',
-      'Mobile app launch',
+      { en: 'New AI characters',      ja: '新AIキャラクター追加' },
+      { en: 'Cross-character events', ja: 'キャラクター横断イベント' },
+      { en: 'DAO governance',         ja: 'DAOガバナンス' },
+      { en: 'Mobile app launch',      ja: 'モバイルアプリリリース' },
     ],
   },
 ];
 
 function PhaseCard({ phase }: { phase: (typeof phases)[0] }) {
   const { ref, onMouseEnter, rippleEl } = useWaterRipple();
+  const { t } = useLanguage();
 
   return (
     <div
@@ -61,88 +61,66 @@ function PhaseCard({ phase }: { phase: (typeof phases)[0] }) {
           ? 'border-[#00E5FF]/50 shadow-lg shadow-[#00E5FF]/20'
           : 'border-white/10 hover:border-white/20'
       }`}>
-        {/* 背景画像 */}
         <div className="absolute inset-0">
-          <img
-            src={phase.bg}
-            alt=""
-            className="w-full h-full object-cover"
-            style={{ objectPosition: phase.bgPos }}
-          />
+          <img src={phase.bg} alt="" className="w-full h-full object-cover" style={{ objectPosition: phase.bgPos }} />
         </div>
-        {/* 黒半透明オーバーレイ */}
         <div className="absolute inset-0 bg-black/90" />
-        {/* 下部グラデーション */}
         <div className="absolute inset-0 bg-gradient-to-t from-[#0D0D1A]/80 via-transparent to-transparent" />
-        {/* Active glow */}
         {phase.status === 'active' && (
           <div className="absolute inset-0 bg-gradient-to-br from-[#00E5FF]/10 to-[#A855F7]/10 animate-pulse" />
         )}
 
         <div className="relative p-8 space-y-6">
-          {/* フェーズラベル + 大きめアイコン */}
           <div className="flex items-center justify-between">
-            <span className={`font-mono text-sm ${
-              phase.status === 'active' ? 'text-[#00E5FF]' : 'text-[#A0ADB8]'
-            }`}>
+            <span className={`font-mono text-sm ${phase.status === 'active' ? 'text-[#00E5FF]' : 'text-[#A0ADB8]'}`}>
               {phase.phase.toUpperCase()}
             </span>
-            {/* アイコン画像（大きめ） */}
-            <div className={`w-20 h-20 rounded-xl overflow-hidden border ${
-              phase.status === 'active' ? 'border-[#00E5FF]/40' : 'border-white/20'
-            }`}>
-              <img
-                src={phase.bg}
-                alt=""
-                className="w-full h-full object-cover"
-                style={{ objectPosition: phase.iconPos }}
-              />
+            <div className={`w-20 h-20 rounded-xl overflow-hidden border ${phase.status === 'active' ? 'border-[#00E5FF]/40' : 'border-white/20'}`}>
+              <img src={phase.bg} alt="" className="w-full h-full object-cover" style={{ objectPosition: phase.iconPos }} />
             </div>
           </div>
 
-          {/* タイトル */}
-          <h3 className="text-2xl font-bold text-white">{phase.title}</h3>
+          <h3 className="text-2xl font-bold text-white">{t(phase.title)}</h3>
 
-          {/* ステータスバッジ */}
           {phase.status === 'active' && (
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#00E5FF]/20 border border-[#00E5FF]/30">
               <div className="w-2 h-2 rounded-full bg-[#00E5FF] animate-pulse" />
-              <span className="text-xs font-medium text-[#00E5FF]">IN PROGRESS</span>
+              <span className="text-xs font-medium text-[#00E5FF]">
+                {t({ en: 'IN PROGRESS', ja: '進行中' })}
+              </span>
             </div>
           )}
 
-          {/* 項目リスト */}
           <ul className="space-y-3">
             {phase.items.map((item, idx) => (
               <li key={idx} className="flex items-start gap-3">
-                <div className={`mt-1.5 w-1.5 h-1.5 rounded-full shrink-0 ${
-                  phase.status === 'active' ? 'bg-[#00E5FF]' : 'bg-[#A0ADB8]'
-                }`} />
-                <span className="text-[#A0ADB8]">{item}</span>
+                <div className={`mt-1.5 w-1.5 h-1.5 rounded-full shrink-0 ${phase.status === 'active' ? 'bg-[#00E5FF]' : 'bg-[#A0ADB8]'}`} />
+                <span className="text-[#A0ADB8]">{t(item)}</span>
               </li>
             ))}
           </ul>
         </div>
       </div>
 
-      {/* 波紋エフェクト（overflow-hidden の外） */}
       {rippleEl}
     </div>
   );
 }
 
 export function Roadmap() {
+  const { t } = useLanguage();
+
   return (
     <section id="roadmap" className="relative py-32 px-6 scroll-mt-20">
       <div className="max-w-7xl mx-auto">
         <div className="text-center mb-16 space-y-4">
           <h2 className="text-4xl sm:text-5xl font-bold">
             <span className="bg-gradient-to-r from-[#FF6B8A] via-[#A855F7] to-[#00E5FF] bg-clip-text text-transparent">
-              Roadmap
+              {t({ en: 'Roadmap', ja: 'ロードマップ' })}
             </span>
           </h2>
           <p className="text-lg sm:text-xl text-[#A0ADB8] max-w-2xl mx-auto">
-            Building the future of AI VTuber engagement
+            {t({ en: 'Building the future of AI VTuber engagement', ja: 'AI VTuberエンゲージメントの未来を構築中' })}
           </p>
         </div>
 

@@ -1,12 +1,13 @@
-import { useState, useCallback, useRef } from 'react';
+import { useState, useCallback } from 'react';
 import { useWaterRipple } from './useWaterRipple';
+import { useLanguage, T } from './LanguageContext';
 
-const data = [
-  { name: 'Community', value: 40, color: '#00E5FF' },
-  { name: 'Events',    value: 25, color: '#FF6B8A' },
-  { name: 'Treasury',  value: 20, color: '#A855F7' },
-  { name: 'Team',      value: 10, color: '#60A5FA' },
-  { name: 'Liquidity', value:  5, color: '#34D399' },
+const data: { nameKey: T; value: number; color: string }[] = [
+  { nameKey: { en: 'Community', ja: 'コミュニティ' }, value: 40, color: '#00E5FF' },
+  { nameKey: { en: 'Events',    ja: 'イベント'      }, value: 25, color: '#FF6B8A' },
+  { nameKey: { en: 'Treasury',  ja: 'トレジャリー'  }, value: 20, color: '#A855F7' },
+  { nameKey: { en: 'Team',      ja: 'チーム'        }, value: 10, color: '#60A5FA' },
+  { nameKey: { en: 'Liquidity', ja: '流動性'        }, value:  5, color: '#34D399' },
 ];
 
 // ── Donut chart geometry ───────────────────────────────────────────────────────
@@ -46,6 +47,7 @@ interface LegendItemProps {
 
 function LegendItem({ item, index, hoveredIndex, onHover, onLeave }: LegendItemProps) {
   const { ref, onMouseEnter, rippleEl } = useWaterRipple();
+  const { t } = useLanguage();
 
   const isHovered = hoveredIndex === index;
   const isAbove   = hoveredIndex !== null && index < hoveredIndex;
@@ -73,7 +75,7 @@ function LegendItem({ item, index, hoveredIndex, onHover, onLeave }: LegendItemP
       }`}>
         <div className="flex items-center gap-3">
           <div className="w-4 h-4 rounded-full" style={{ backgroundColor: item.color }} />
-          <span className="text-white font-medium">{item.name}</span>
+          <span className="text-white font-medium">{t(item.nameKey)}</span>
         </div>
         <span className="text-xl sm:text-2xl font-bold" style={{ color: item.color }}>
           {item.value}%
@@ -93,11 +95,12 @@ export function Tokenomics() {
   const [activePie, setActivePie]       = useState<number | null>(null);
   const [hoveredLegend, setHoveredLegend] = useState<number | null>(null);
   const [chartRipples, setChartRipples] = useState<ChartRipple[]>([]);
-  const [tooltip, setTooltip]           = useState<{ name: string; value: number; color: string } | null>(null);
+  const [tooltip, setTooltip]           = useState<{ nameKey: T; value: number; color: string } | null>(null);
+  const { t } = useLanguage();
 
   const handleSegmentEnter = useCallback((i: number) => {
     setActivePie(i);
-    setTooltip({ name: data[i].name, value: data[i].value, color: data[i].color });
+    setTooltip({ nameKey: data[i].nameKey, value: data[i].value, color: data[i].color });
 
     // Ripple at segment midpoint (SVG 320×320 → %)
     const seg = segments[i];
@@ -123,11 +126,11 @@ export function Tokenomics() {
         <div className="text-center mb-16 space-y-4">
           <h2 className="text-4xl sm:text-5xl font-bold">
             <span className="bg-gradient-to-r from-white to-[#A0ADB8] bg-clip-text text-transparent">
-              Tokenomics
+              {t({ en: 'Tokenomics', ja: 'トークノミクス' })}
             </span>
           </h2>
           <p className="text-lg sm:text-xl text-[#A0ADB8] max-w-2xl mx-auto">
-            Fair distribution focused on community
+            {t({ en: 'Fair distribution focused on community', ja: 'コミュニティ重視の公平な配布' })}
           </p>
         </div>
 
@@ -186,7 +189,7 @@ export function Tokenomics() {
                     className="absolute top-3 left-1/2 -translate-x-1/2 px-3 py-1.5 rounded-lg bg-white text-gray-900 text-sm font-semibold pointer-events-none shadow"
                     style={{ border: `1.5px solid ${tooltip.color}` }}
                   >
-                    {tooltip.name}: {tooltip.value}%
+                    {t(tooltip.nameKey)}: {tooltip.value}%
                   </div>
                 )}
 
@@ -223,7 +226,7 @@ export function Tokenomics() {
 
                 <div className="mt-8 pt-6 border-t border-white/10">
                   <div className="flex items-center justify-between">
-                    <span className="text-[#A0ADB8]">Total Supply</span>
+                    <span className="text-[#A0ADB8]">{t({ en: 'Total Supply', ja: '総供給量' })}</span>
                     <span className="text-xl sm:text-2xl font-bold text-white font-mono">10,000,000</span>
                   </div>
                 </div>
