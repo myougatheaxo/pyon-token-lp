@@ -28,6 +28,15 @@ export function Tokenomics() {
 
         <div className="max-w-5xl mx-auto">
           <div className="p-6 sm:p-12 rounded-3xl bg-[rgba(26,26,42,0.6)] backdrop-blur-xl border border-white/10 relative overflow-hidden">
+            {/* DEMOウォーターマーク */}
+            <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-10">
+              <span
+                className="text-white/10 font-black select-none"
+                style={{ fontSize: '10rem', transform: 'rotate(-30deg)', letterSpacing: '0.1em' }}
+              >
+                DEMO
+              </span>
+            </div>
             {/* Background grid pattern */}
             <div className="absolute inset-0 opacity-5" 
                  style={{ 
