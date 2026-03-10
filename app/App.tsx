@@ -1,4 +1,5 @@
 import { Navbar } from './components/Navbar';
+import { UnderwaterBackground } from './components/UnderwaterBackground';
 import { Hero } from './components/Hero';
 import { HowItWorks } from './components/HowItWorks';
 import { Utility } from './components/Utility';
@@ -10,6 +11,7 @@ import { Footer } from './components/Footer';
 function App() {
   return (
     <div className="min-h-screen bg-[#0D0D1A] text-white overflow-x-hidden">
+      <UnderwaterBackground />
       <Navbar />
       <Hero />
       <HowItWorks />
