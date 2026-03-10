@@ -1,41 +1,53 @@
-import { Sparkles, Brain, Fish, Lock } from 'lucide-react';
+const BASE = '/pyon-token-lp/utility';
+
+const cards = [
+  {
+    bg: `${BASE}/card1-bg.png`,
+    icon: `${BASE}/card1-icon.png`,
+    bgPos: '42% 12%',
+    iconPos: '42% 10%',
+    amount: '100 PYON',
+    amountColor: 'text-[#00E5FF]',
+    title: 'Pyonがあなたを認識',
+    description: 'Pyonがあなたの名前を覚え、配信中に呼びかけてくれる',
+    available: true,
+  },
+  {
+    bg: `${BASE}/card2-bg.png`,
+    icon: `${BASE}/card2-icon.png`,
+    bgPos: '50% 18%',
+    iconPos: '50% 15%',
+    amount: '1,000 PYON',
+    amountColor: 'text-[#00E5FF]',
+    title: '記憶がより深まる',
+    description: '会話の内容をより長く覚えてくれる。あなたのことをよく知ったPyonと話せる',
+    available: true,
+  },
+  {
+    bg: `${BASE}/card3-bg.png`,
+    icon: `${BASE}/card3-icon.png`,
+    bgPos: '50% 12%',
+    iconPos: '50% 10%',
+    amount: '5,000 PYON',
+    amountColor: 'text-[#00E5FF]',
+    title: '同じ魚仲間として認識',
+    description: 'Pyonがあなたを「同じ魚」として認識。よりフレンドリーで特別な関係に',
+    available: true,
+  },
+  {
+    bg: `${BASE}/card4-bg.png`,
+    icon: `${BASE}/card4-icon.png`,
+    bgPos: '50% 15%',
+    iconPos: '50% 12%',
+    amount: 'Coming Soon',
+    amountColor: 'text-[#A0ADB8]',
+    title: '今後追加予定',
+    description: '収益性に合わせて新しい特典を追加していきます',
+    available: false,
+  },
+];
 
 export function Utility() {
-  const utilities = [
-    {
-      icon: Sparkles,
-      amount: '100 PYON',
-      title: 'Pyonがあなたを認識',
-      description: 'Pyonがあなたの名前を覚え、配信中に呼びかけてくれる',
-      color: 'from-[#FF6B8A] to-[#FF6B8A]/50',
-      available: true,
-    },
-    {
-      icon: Brain,
-      amount: '1,000 PYON',
-      title: '記憶がより深まる',
-      description: '会話の内容をより長く覚えてくれる。あなたのことをよく知ったPyonと話せる',
-      color: 'from-[#00E5FF] to-[#00E5FF]/50',
-      available: true,
-    },
-    {
-      icon: Fish,
-      amount: '5,000 PYON',
-      title: '同じ魚仲間として認識',
-      description: 'Pyonがあなたを「同じ魚」として認識。よりフレンドリーで特別な関係に',
-      color: 'from-[#A855F7] to-[#A855F7]/50',
-      available: true,
-    },
-    {
-      icon: Lock,
-      amount: 'Coming Soon',
-      title: '今後追加予定',
-      description: '収益性に合わせて新しい特典を追加していきます',
-      color: 'from-[#A0ADB8] to-[#A0ADB8]/50',
-      available: false,
-    },
-  ];
-
   return (
     <section className="relative py-32 px-6">
       <div className="max-w-7xl mx-auto">
@@ -58,57 +70,40 @@ export function Utility() {
         </div>
 
         <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          {/* Card 1: 画像レイヤーデザイン */}
-          <div className="group relative p-6 rounded-2xl border border-white/10 overflow-hidden transition-all duration-300 hover:border-white/20 hover:scale-105">
-            {/* 背景画像（顔中心クロップ） */}
-            <div className="absolute inset-0">
-              <img
-                src="/pyon-token-lp/utility/card1-bg.png"
-                alt=""
-                className="w-full h-full object-cover"
-                style={{ objectPosition: '42% 12%' }}
-              />
-            </div>
-            {/* 黒半透明オーバーレイ */}
-            <div className="absolute inset-0 bg-black/80" />
-            {/* 下部グラデーション（テキスト可読性） */}
-            <div className="absolute inset-0 bg-gradient-to-t from-[#0D0D1A]/80 via-transparent to-transparent" />
-
-            <div className="relative space-y-4">
-              {/* アイコン（ピクセルアート） */}
-              <div className="w-14 h-14 rounded-xl overflow-hidden border border-white/20">
-                <img
-                  src="/pyon-token-lp/utility/card1-icon.png"
-                  alt=""
-                  className="w-full h-full object-cover"
-                  style={{ objectPosition: '42% 10%' }}
-                />
-              </div>
-
-              <div className="font-mono text-sm text-[#00E5FF]">100 PYON</div>
-              <div className="space-y-2">
-                <h3 className="text-xl font-bold text-white">Pyonがあなたを認識</h3>
-                <p className="text-sm text-[#A0ADB8] leading-relaxed">Pyonがあなたの名前を覚え、配信中に呼びかけてくれる</p>
-              </div>
-            </div>
-          </div>
-
-          {/* Card 2〜4: 既存デザイン */}
-          {utilities.slice(1).map((utility, index) => (
+          {cards.map((card, index) => (
             <div
               key={index}
-              className={`group relative p-6 rounded-2xl bg-[rgba(26,26,42,0.6)] backdrop-blur-xl border border-white/10 transition-all duration-300 ${utility.available ? 'hover:border-white/20 hover:scale-105' : 'opacity-50'}`}
+              className={`group relative p-6 rounded-2xl border border-white/10 overflow-hidden transition-all duration-300 ${card.available ? 'hover:border-white/20 hover:scale-105' : 'opacity-50'}`}
             >
-              <div className={`absolute inset-0 rounded-2xl bg-gradient-to-br ${utility.color} opacity-0 group-hover:opacity-10 transition-opacity duration-300 blur-xl`} />
+              {/* 背景画像 */}
+              <div className="absolute inset-0">
+                <img
+                  src={card.bg}
+                  alt=""
+                  className="w-full h-full object-cover"
+                  style={{ objectPosition: card.bgPos }}
+                />
+              </div>
+              {/* 黒半透明オーバーレイ */}
+              <div className="absolute inset-0 bg-black/80" />
+              {/* 下部グラデーション */}
+              <div className="absolute inset-0 bg-gradient-to-t from-[#0D0D1A]/80 via-transparent to-transparent" />
 
               <div className="relative space-y-4">
-                <div className={`w-14 h-14 rounded-xl bg-gradient-to-br ${utility.color} flex items-center justify-center`}>
-                  <utility.icon className="w-7 h-7 text-white" />
+                {/* ピクセルアートアイコン */}
+                <div className="w-14 h-14 rounded-xl overflow-hidden border border-white/20">
+                  <img
+                    src={card.icon}
+                    alt=""
+                    className="w-full h-full object-cover"
+                    style={{ objectPosition: card.iconPos }}
+                  />
                 </div>
-                <div className={`font-mono text-sm ${utility.available ? 'text-[#00E5FF]' : 'text-[#A0ADB8]'}`}>{utility.amount}</div>
+
+                <div className={`font-mono text-sm ${card.amountColor}`}>{card.amount}</div>
                 <div className="space-y-2">
-                  <h3 className="text-xl font-bold text-white">{utility.title}</h3>
-                  <p className="text-sm text-[#A0ADB8] leading-relaxed">{utility.description}</p>
+                  <h3 className="text-xl font-bold text-white">{card.title}</h3>
+                  <p className="text-sm text-[#A0ADB8] leading-relaxed">{card.description}</p>
                 </div>
               </div>
             </div>
