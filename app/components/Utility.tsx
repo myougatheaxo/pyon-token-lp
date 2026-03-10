@@ -58,24 +58,54 @@ export function Utility() {
         </div>
 
         <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          {utilities.map((utility, index) => (
+          {/* Card 1: 画像レイヤーデザイン */}
+          <div className="group relative p-6 rounded-2xl border border-white/10 overflow-hidden transition-all duration-300 hover:border-white/20 hover:scale-105">
+            {/* 背景画像（顔中心クロップ） */}
+            <div className="absolute inset-0">
+              <img
+                src="/pyon-token-lp/utility/card1-bg.png"
+                alt=""
+                className="w-full h-full object-cover"
+                style={{ objectPosition: '42% 12%' }}
+              />
+            </div>
+            {/* 白半透明オーバーレイ */}
+            <div className="absolute inset-0 bg-white/15" />
+            {/* 下部グラデーション（テキスト可読性） */}
+            <div className="absolute inset-0 bg-gradient-to-t from-[#0D0D1A]/80 via-transparent to-transparent" />
+
+            <div className="relative space-y-4">
+              {/* アイコン（ピクセルアート） */}
+              <div className="w-14 h-14 rounded-xl overflow-hidden border border-white/20">
+                <img
+                  src="/pyon-token-lp/utility/card1-icon.png"
+                  alt=""
+                  className="w-full h-full object-cover"
+                  style={{ objectPosition: '42% 10%' }}
+                />
+              </div>
+
+              <div className="font-mono text-sm text-[#00E5FF]">100 PYON</div>
+              <div className="space-y-2">
+                <h3 className="text-xl font-bold text-white">Pyonがあなたを認識</h3>
+                <p className="text-sm text-[#A0ADB8] leading-relaxed">Pyonがあなたの名前を覚え、配信中に呼びかけてくれる</p>
+              </div>
+            </div>
+          </div>
+
+          {/* Card 2〜4: 既存デザイン */}
+          {utilities.slice(1).map((utility, index) => (
             <div
               key={index}
               className={`group relative p-6 rounded-2xl bg-[rgba(26,26,42,0.6)] backdrop-blur-xl border border-white/10 transition-all duration-300 ${utility.available ? 'hover:border-white/20 hover:scale-105' : 'opacity-50'}`}
             >
-              {/* Glow effect */}
               <div className={`absolute inset-0 rounded-2xl bg-gradient-to-br ${utility.color} opacity-0 group-hover:opacity-10 transition-opacity duration-300 blur-xl`} />
 
               <div className="relative space-y-4">
-                {/* Icon */}
                 <div className={`w-14 h-14 rounded-xl bg-gradient-to-br ${utility.color} flex items-center justify-center`}>
                   <utility.icon className="w-7 h-7 text-white" />
                 </div>
-
-                {/* Amount */}
                 <div className={`font-mono text-sm ${utility.available ? 'text-[#00E5FF]' : 'text-[#A0ADB8]'}`}>{utility.amount}</div>
-
-                {/* Content */}
                 <div className="space-y-2">
                   <h3 className="text-xl font-bold text-white">{utility.title}</h3>
                   <p className="text-sm text-[#A0ADB8] leading-relaxed">{utility.description}</p>
