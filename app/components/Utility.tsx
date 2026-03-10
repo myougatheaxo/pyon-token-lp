@@ -1,3 +1,5 @@
+import { useWaterRipple } from './useWaterRipple';
+
 const BASE = '/pyon-token-lp/utility';
 
 const cards = [
@@ -47,6 +49,55 @@ const cards = [
   },
 ];
 
+function UtilityCard({ card }: { card: (typeof cards)[0] }) {
+  const { ref, onMouseEnter, rippleEl } = useWaterRipple();
+
+  return (
+    <div
+      ref={ref}
+      onMouseEnter={card.available ? onMouseEnter : undefined}
+      className={`group relative rounded-2xl ${card.available ? '' : 'opacity-50'}`}
+    >
+      <div className={`relative p-6 rounded-2xl border border-white/10 overflow-hidden transition-all duration-300 ${card.available ? 'hover:border-white/20 hover:scale-105' : ''}`}>
+        {/* 背景画像 */}
+        <div className="absolute inset-0">
+          <img
+            src={card.bg}
+            alt=""
+            className="w-full h-full object-cover"
+            style={{ objectPosition: card.bgPos }}
+          />
+        </div>
+        {/* 黒半透明オーバーレイ */}
+        <div className="absolute inset-0 bg-black/80" />
+        {/* 下部グラデーション */}
+        <div className="absolute inset-0 bg-gradient-to-t from-[#0D0D1A]/80 via-transparent to-transparent" />
+
+        <div className="relative space-y-4">
+          {/* ピクセルアートアイコン */}
+          <div className="w-14 h-14 rounded-xl overflow-hidden border border-white/20">
+            <img
+              src={card.icon}
+              alt=""
+              className="w-full h-full object-cover"
+              style={{ objectPosition: card.iconPos }}
+            />
+          </div>
+
+          <div className={`font-mono text-sm ${card.amountColor}`}>{card.amount}</div>
+          <div className="space-y-2">
+            <h3 className="text-xl font-bold text-white">{card.title}</h3>
+            <p className="text-sm text-[#A0ADB8] leading-relaxed">{card.description}</p>
+          </div>
+        </div>
+      </div>
+
+      {/* 波紋エフェクト（overflow-hidden の外） */}
+      {rippleEl}
+    </div>
+  );
+}
+
 export function Utility() {
   return (
     <section className="relative py-32 px-6">
@@ -71,42 +122,7 @@ export function Utility() {
 
         <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
           {cards.map((card, index) => (
-            <div
-              key={index}
-              className={`group relative p-6 rounded-2xl border border-white/10 overflow-hidden transition-all duration-300 ${card.available ? 'hover:border-white/20 hover:scale-105' : 'opacity-50'}`}
-            >
-              {/* 背景画像 */}
-              <div className="absolute inset-0">
-                <img
-                  src={card.bg}
-                  alt=""
-                  className="w-full h-full object-cover"
-                  style={{ objectPosition: card.bgPos }}
-                />
-              </div>
-              {/* 黒半透明オーバーレイ */}
-              <div className="absolute inset-0 bg-black/80" />
-              {/* 下部グラデーション */}
-              <div className="absolute inset-0 bg-gradient-to-t from-[#0D0D1A]/80 via-transparent to-transparent" />
-
-              <div className="relative space-y-4">
-                {/* ピクセルアートアイコン */}
-                <div className="w-14 h-14 rounded-xl overflow-hidden border border-white/20">
-                  <img
-                    src={card.icon}
-                    alt=""
-                    className="w-full h-full object-cover"
-                    style={{ objectPosition: card.iconPos }}
-                  />
-                </div>
-
-                <div className={`font-mono text-sm ${card.amountColor}`}>{card.amount}</div>
-                <div className="space-y-2">
-                  <h3 className="text-xl font-bold text-white">{card.title}</h3>
-                  <p className="text-sm text-[#A0ADB8] leading-relaxed">{card.description}</p>
-                </div>
-              </div>
-            </div>
+            <UtilityCard key={index} card={card} />
           ))}
         </div>
       </div>

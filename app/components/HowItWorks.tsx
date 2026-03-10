@@ -1,3 +1,5 @@
+import { useWaterRipple } from './useWaterRipple';
+
 const BASE = '/pyon-token-lp/utility';
 
 const steps = [
@@ -30,6 +32,58 @@ const steps = [
   },
 ];
 
+function StepCard({ step, isLast }: { step: (typeof steps)[0]; isLast: boolean }) {
+  const { ref, onMouseEnter, rippleEl } = useWaterRipple();
+
+  return (
+    <div ref={ref} onMouseEnter={onMouseEnter} className="relative group">
+      <div className="relative h-full rounded-2xl overflow-hidden border border-white/10 hover:border-white/20 transition-all duration-300">
+        {/* 背景画像 */}
+        <div className="absolute inset-0">
+          <img
+            src={step.bg}
+            alt=""
+            className="w-full h-full object-cover"
+            style={{ objectPosition: step.bgPos }}
+          />
+        </div>
+        {/* 黒半透明オーバーレイ */}
+        <div className="absolute inset-0 bg-black/75" />
+        {/* ホバーグロー */}
+        <div className={`absolute inset-0 bg-gradient-to-br ${step.gradient} opacity-0 group-hover:opacity-10 transition-opacity duration-300 blur-xl`} />
+
+        <div className="relative p-8 space-y-6">
+          {/* ステップ番号 + アイコン */}
+          <div className="flex items-center justify-between">
+            <span className="font-mono text-sm text-[#00E5FF]">{step.step}</span>
+            <div className="w-16 h-16 rounded-xl overflow-hidden border border-white/20">
+              <img
+                src={step.bg}
+                alt=""
+                className="w-full h-full object-cover"
+                style={{ objectPosition: step.iconPos }}
+              />
+            </div>
+          </div>
+
+          <div className="space-y-3">
+            <h3 className="text-2xl font-bold text-white">{step.title}</h3>
+            <p className="text-[#A0ADB8] leading-relaxed">{step.description}</p>
+          </div>
+        </div>
+      </div>
+
+      {/* 波紋エフェクト（overflow-hidden の外） */}
+      {rippleEl}
+
+      {/* コネクター */}
+      {!isLast && (
+        <div className="hidden md:block absolute top-1/2 -right-4 w-8 h-[2px] bg-gradient-to-r from-white/20 to-transparent z-10" />
+      )}
+    </div>
+  );
+}
+
 export function HowItWorks() {
   return (
     <section id="how-it-works" className="relative py-32 px-6 overflow-hidden scroll-mt-20">
@@ -49,48 +103,7 @@ export function HowItWorks() {
 
         <div className="grid md:grid-cols-3 gap-8">
           {steps.map((step, index) => (
-            <div key={index} className="relative group">
-              <div className="relative h-full rounded-2xl overflow-hidden border border-white/10 hover:border-white/20 transition-all duration-300">
-                {/* 背景画像 */}
-                <div className="absolute inset-0">
-                  <img
-                    src={step.bg}
-                    alt=""
-                    className="w-full h-full object-cover"
-                    style={{ objectPosition: step.bgPos }}
-                  />
-                </div>
-                {/* 黒半透明オーバーレイ */}
-                <div className="absolute inset-0 bg-black/75" />
-                {/* ホバーグロー */}
-                <div className={`absolute inset-0 bg-gradient-to-br ${step.gradient} opacity-0 group-hover:opacity-10 transition-opacity duration-300 blur-xl`} />
-
-                <div className="relative p-8 space-y-6">
-                  {/* ステップ番号 + アイコン */}
-                  <div className="flex items-center justify-between">
-                    <span className="font-mono text-sm text-[#00E5FF]">{step.step}</span>
-                    <div className="w-16 h-16 rounded-xl overflow-hidden border border-white/20">
-                      <img
-                        src={step.bg}
-                        alt=""
-                        className="w-full h-full object-cover"
-                        style={{ objectPosition: step.iconPos }}
-                      />
-                    </div>
-                  </div>
-
-                  <div className="space-y-3">
-                    <h3 className="text-2xl font-bold text-white">{step.title}</h3>
-                    <p className="text-[#A0ADB8] leading-relaxed">{step.description}</p>
-                  </div>
-                </div>
-              </div>
-
-              {/* コネクター */}
-              {index < steps.length - 1 && (
-                <div className="hidden md:block absolute top-1/2 -right-4 w-8 h-[2px] bg-gradient-to-r from-white/20 to-transparent z-10" />
-              )}
-            </div>
+            <StepCard key={index} step={step} isLast={index === steps.length - 1} />
           ))}
         </div>
       </div>

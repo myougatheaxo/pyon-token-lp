@@ -1,3 +1,5 @@
+import { useWaterRipple } from './useWaterRipple';
+
 const BASE = '/pyon-token-lp/utility';
 
 const phases = [
@@ -45,6 +47,90 @@ const phases = [
   },
 ];
 
+function PhaseCard({ phase }: { phase: (typeof phases)[0] }) {
+  const { ref, onMouseEnter, rippleEl } = useWaterRipple();
+
+  return (
+    <div
+      ref={ref}
+      onMouseEnter={onMouseEnter}
+      className={`relative group ${phase.status === 'active' ? 'scale-105' : ''}`}
+    >
+      <div className={`relative h-full rounded-2xl overflow-hidden border transition-all duration-300 ${
+        phase.status === 'active'
+          ? 'border-[#00E5FF]/50 shadow-lg shadow-[#00E5FF]/20'
+          : 'border-white/10 hover:border-white/20'
+      }`}>
+        {/* 背景画像 */}
+        <div className="absolute inset-0">
+          <img
+            src={phase.bg}
+            alt=""
+            className="w-full h-full object-cover"
+            style={{ objectPosition: phase.bgPos }}
+          />
+        </div>
+        {/* 黒半透明オーバーレイ */}
+        <div className="absolute inset-0 bg-black/90" />
+        {/* 下部グラデーション */}
+        <div className="absolute inset-0 bg-gradient-to-t from-[#0D0D1A]/80 via-transparent to-transparent" />
+        {/* Active glow */}
+        {phase.status === 'active' && (
+          <div className="absolute inset-0 bg-gradient-to-br from-[#00E5FF]/10 to-[#A855F7]/10 animate-pulse" />
+        )}
+
+        <div className="relative p-8 space-y-6">
+          {/* フェーズラベル + 大きめアイコン */}
+          <div className="flex items-center justify-between">
+            <span className={`font-mono text-sm ${
+              phase.status === 'active' ? 'text-[#00E5FF]' : 'text-[#A0ADB8]'
+            }`}>
+              {phase.phase.toUpperCase()}
+            </span>
+            {/* アイコン画像（大きめ） */}
+            <div className={`w-20 h-20 rounded-xl overflow-hidden border ${
+              phase.status === 'active' ? 'border-[#00E5FF]/40' : 'border-white/20'
+            }`}>
+              <img
+                src={phase.bg}
+                alt=""
+                className="w-full h-full object-cover"
+                style={{ objectPosition: phase.iconPos }}
+              />
+            </div>
+          </div>
+
+          {/* タイトル */}
+          <h3 className="text-2xl font-bold text-white">{phase.title}</h3>
+
+          {/* ステータスバッジ */}
+          {phase.status === 'active' && (
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#00E5FF]/20 border border-[#00E5FF]/30">
+              <div className="w-2 h-2 rounded-full bg-[#00E5FF] animate-pulse" />
+              <span className="text-xs font-medium text-[#00E5FF]">IN PROGRESS</span>
+            </div>
+          )}
+
+          {/* 項目リスト */}
+          <ul className="space-y-3">
+            {phase.items.map((item, idx) => (
+              <li key={idx} className="flex items-start gap-3">
+                <div className={`mt-1.5 w-1.5 h-1.5 rounded-full shrink-0 ${
+                  phase.status === 'active' ? 'bg-[#00E5FF]' : 'bg-[#A0ADB8]'
+                }`} />
+                <span className="text-[#A0ADB8]">{item}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
+
+      {/* 波紋エフェクト（overflow-hidden の外） */}
+      {rippleEl}
+    </div>
+  );
+}
+
 export function Roadmap() {
   return (
     <section id="roadmap" className="relative py-32 px-6 scroll-mt-20">
@@ -62,79 +148,7 @@ export function Roadmap() {
 
         <div className="grid lg:grid-cols-3 gap-8">
           {phases.map((phase, index) => (
-            <div
-              key={index}
-              className={`relative group ${phase.status === 'active' ? 'scale-105' : ''}`}
-            >
-              <div className={`relative h-full rounded-2xl overflow-hidden border transition-all duration-300 ${
-                phase.status === 'active'
-                  ? 'border-[#00E5FF]/50 shadow-lg shadow-[#00E5FF]/20'
-                  : 'border-white/10 hover:border-white/20'
-              }`}>
-                {/* 背景画像 */}
-                <div className="absolute inset-0">
-                  <img
-                    src={phase.bg}
-                    alt=""
-                    className="w-full h-full object-cover"
-                    style={{ objectPosition: phase.bgPos }}
-                  />
-                </div>
-                {/* 黒半透明オーバーレイ */}
-                <div className="absolute inset-0 bg-black/90" />
-                {/* 下部グラデーション */}
-                <div className="absolute inset-0 bg-gradient-to-t from-[#0D0D1A]/80 via-transparent to-transparent" />
-                {/* Active glow */}
-                {phase.status === 'active' && (
-                  <div className="absolute inset-0 bg-gradient-to-br from-[#00E5FF]/10 to-[#A855F7]/10 animate-pulse" />
-                )}
-
-                <div className="relative p-8 space-y-6">
-                  {/* フェーズラベル + 大きめアイコン */}
-                  <div className="flex items-center justify-between">
-                    <span className={`font-mono text-sm ${
-                      phase.status === 'active' ? 'text-[#00E5FF]' : 'text-[#A0ADB8]'
-                    }`}>
-                      {phase.phase.toUpperCase()}
-                    </span>
-                    {/* アイコン画像（大きめ） */}
-                    <div className={`w-20 h-20 rounded-xl overflow-hidden border ${
-                      phase.status === 'active' ? 'border-[#00E5FF]/40' : 'border-white/20'
-                    }`}>
-                      <img
-                        src={phase.bg}
-                        alt=""
-                        className="w-full h-full object-cover"
-                        style={{ objectPosition: phase.iconPos }}
-                      />
-                    </div>
-                  </div>
-
-                  {/* タイトル */}
-                  <h3 className="text-2xl font-bold text-white">{phase.title}</h3>
-
-                  {/* ステータスバッジ */}
-                  {phase.status === 'active' && (
-                    <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#00E5FF]/20 border border-[#00E5FF]/30">
-                      <div className="w-2 h-2 rounded-full bg-[#00E5FF] animate-pulse" />
-                      <span className="text-xs font-medium text-[#00E5FF]">IN PROGRESS</span>
-                    </div>
-                  )}
-
-                  {/* 項目リスト */}
-                  <ul className="space-y-3">
-                    {phase.items.map((item, idx) => (
-                      <li key={idx} className="flex items-start gap-3">
-                        <div className={`mt-1.5 w-1.5 h-1.5 rounded-full shrink-0 ${
-                          phase.status === 'active' ? 'bg-[#00E5FF]' : 'bg-[#A0ADB8]'
-                        }`} />
-                        <span className="text-[#A0ADB8]">{item}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              </div>
-            </div>
+            <PhaseCard key={index} phase={phase} />
           ))}
         </div>
       </div>
