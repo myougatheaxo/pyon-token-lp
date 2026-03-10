@@ -70,7 +70,7 @@ export function Utility() {
               />
             </div>
             {/* 黒半透明オーバーレイ */}
-            <div className="absolute inset-0 bg-black/50" />
+            <div className="absolute inset-0 bg-black/80" />
             {/* 下部グラデーション（テキスト可読性） */}
             <div className="absolute inset-0 bg-gradient-to-t from-[#0D0D1A]/80 via-transparent to-transparent" />
 
