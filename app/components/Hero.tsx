@@ -1,7 +1,6 @@
 import { Button } from './ui/button';
 import { BubbleParticles } from './BubbleParticles';
 import { WaveDecoration } from './WaveDecoration';
-import { Fish } from 'lucide-react';
 
 export function Hero() {
   const scrollToSection = (id: string) => {
@@ -61,17 +60,22 @@ export function Hero() {
           </div>
         </div>
         
-        {/* Character placeholder */}
+        {/* Character */}
         <div className="relative flex items-center justify-center">
           <div className="relative w-64 h-64 sm:w-80 sm:h-80 lg:w-96 lg:h-96">
             {/* Glow effect */}
-            <div className="absolute inset-0 bg-gradient-to-r from-[#FF6B8A]/20 via-[#00E5FF]/20 to-[#A855F7]/20 rounded-full blur-3xl animate-pulse" />
-            
-            {/* Character placeholder */}
-            <div className="relative w-full h-full rounded-full bg-gradient-to-br from-[#FF6B8A]/10 to-[#00E5FF]/10 backdrop-blur-xl border border-white/10 flex items-center justify-center">
-              <Fish className="w-24 h-24 sm:w-32 sm:h-32 text-[#00E5FF] opacity-50" />
-              <div className="absolute inset-0 rounded-full border-4 border-[#00E5FF]/20 animate-ping" style={{ animationDuration: '3s' }} />
+            <div className="absolute inset-0 bg-gradient-to-r from-[#FF6B8A]/20 via-[#FFD700]/20 to-[#A855F7]/20 rounded-full blur-3xl animate-pulse" />
+
+            {/* Face crop circle */}
+            <div className="relative w-full h-full rounded-full overflow-hidden border border-white/10">
+              <img
+                src="/pyon-token-lp/pyon.png"
+                alt="Pyon"
+                className="w-full h-[160%] object-cover object-top"
+                style={{ marginTop: '-5%' }}
+              />
             </div>
+            <div className="absolute inset-0 rounded-full border-2 border-[#FFD700]/30 animate-ping" style={{ animationDuration: '3s' }} />
           </div>
         </div>
       </div>
