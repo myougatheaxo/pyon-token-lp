@@ -69,8 +69,8 @@ export function Utility() {
                 style={{ objectPosition: '42% 12%' }}
               />
             </div>
-            {/* 白半透明オーバーレイ */}
-            <div className="absolute inset-0 bg-white/15" />
+            {/* 黒半透明オーバーレイ */}
+            <div className="absolute inset-0 bg-black/50" />
             {/* 下部グラデーション（テキスト可読性） */}
             <div className="absolute inset-0 bg-gradient-to-t from-[#0D0D1A]/80 via-transparent to-transparent" />
 
