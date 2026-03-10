@@ -48,6 +48,22 @@
   animation: water-ripple 1.5s ease-out both;
 }
 
+/* ボタン水面浮遊: ゆらゆらと浮かんでいるような揺れ */
+@keyframes water-float {
+  0%   { transform: translateY(0px)   rotate(0deg);    }
+  25%  { transform: translateY(-5px)  rotate(-0.7deg); }
+  55%  { transform: translateY(-2px)  rotate(0.5deg);  }
+  78%  { transform: translateY(-4px)  rotate(-0.3deg); }
+  100% { transform: translateY(0px)   rotate(0deg);    }
+}
+.water-float-btn {
+  transition: transform 0.5s ease-out;
+}
+.water-float-btn:hover {
+  animation: water-float 2.2s ease-in-out infinite;
+  transition: none;
+}
+
 /* コースティック光: ゆっくり流れる光の斑 */
 @keyframes caustic-1 {
   0%,100% { transform: translate(0px,   0px)   scale(1);    }
