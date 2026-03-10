@@ -13,7 +13,7 @@ function generateBubbles(count: number): Bubble[] {
   return Array.from({ length: count }, (_, i) => ({
     id: i,
     x: Math.random() * 100,
-    size: Math.random() * 7 + 3,
+    size: Math.random() * 18 + 8,
     duration: Math.random() * 18 + 12,
     delay: Math.random() * 14,
   }));
@@ -53,7 +53,7 @@ export function UnderwaterBackground() {
       {BUBBLES.map((b) => (
         <div
           key={b.id}
-          className="absolute rounded-full border border-[#00E5FF]/15 bg-[#00E5FF]/5 animate-bubble-drift"
+          className="absolute rounded-full border border-[#00E5FF]/30 bg-[#00E5FF]/10 animate-bubble-drift"
           style={{
             left: `${b.x}%`,
             bottom: '-5%',
