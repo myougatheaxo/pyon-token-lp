@@ -46,17 +46,23 @@ export function Navbar() {
             {t({ en: 'FAQ', ja: 'FAQ' })}
           </button>
 
-          {/* Language switcher */}
-          <div className="flex items-center gap-0.5 bg-white/5 border border-white/10 rounded-full p-1">
+          {/* Language switcher — sliding indicator */}
+          <div className="relative flex items-center bg-white/5 border border-white/10 rounded-full p-1">
+            {/* sliding pill */}
+            <span
+              className="absolute top-1 bottom-1 rounded-full bg-[#00E5FF]/20 border border-[#00E5FF]/30"
+              style={{
+                width: 'calc(50% - 4px)',
+                left: lang === 'en' ? '4px' : 'calc(50%)',
+                transition: 'left 0.35s cubic-bezier(0.34, 1.56, 0.64, 1)',
+              }}
+            />
             {(['en', 'ja'] as const).map((l) => (
               <button
                 key={l}
                 onClick={() => setLang(l)}
-                className={`px-3 py-1 rounded-full text-xs font-mono font-bold transition-all duration-200 ${
-                  lang === l
-                    ? 'bg-[#00E5FF]/20 text-[#00E5FF] border border-[#00E5FF]/30'
-                    : 'text-[#A0ADB8] hover:text-white'
-                }`}
+                className="relative z-10 px-3 py-1 w-10 text-xs font-mono font-bold transition-colors duration-300"
+                style={{ color: lang === l ? '#00E5FF' : '#A0ADB8' }}
               >
                 {l === 'en' ? 'EN' : 'JP'}
               </button>
