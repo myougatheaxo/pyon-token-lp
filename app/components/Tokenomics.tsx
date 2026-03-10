@@ -63,12 +63,13 @@ export function Tokenomics() {
                         <Cell key={`cell-${index}`} fill={entry.color} />
                       ))}
                     </Pie>
-                    <Tooltip 
-                      contentStyle={{ 
-                        backgroundColor: 'rgba(26, 26, 42, 0.95)', 
-                        border: '1px solid rgba(255, 255, 255, 0.1)',
+                    <Tooltip
+                      contentStyle={{
+                        backgroundColor: '#ffffff',
+                        border: '1px solid #e5e7eb',
                         borderRadius: '8px',
-                        color: '#fff'
+                        color: '#111827',
+                        fontWeight: 600,
                       }}
                     />
                   </PieChart>
