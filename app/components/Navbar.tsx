@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Button } from './ui/button';
 import { Waves } from 'lucide-react';
+import { WaterRipple } from './WaterRipple';
 
 export function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -47,9 +48,11 @@ export function Navbar() {
           >
             FAQ
           </button>
-          <Button className="bg-gradient-to-r from-[#FF6B8A] to-[#A855F7] hover:opacity-90 transition-opacity text-sm sm:text-base px-4 sm:px-6">
-            Connect Wallet
-          </Button>
+          <WaterRipple>
+            <Button className="bg-gradient-to-r from-[#FF6B8A] to-[#A855F7] hover:opacity-90 transition-opacity text-sm sm:text-base px-4 sm:px-6">
+              Connect Wallet
+            </Button>
+          </WaterRipple>
         </div>
       </div>
     </nav>

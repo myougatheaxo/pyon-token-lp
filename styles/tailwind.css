@@ -38,6 +38,15 @@
   animation: bubble-drift ease-in-out infinite;
 }
 
+/* ホバー水波紋 */
+@keyframes water-ripple {
+  0%   { transform: translate(-50%, -50%) scale(1);   opacity: 0.55; }
+  100% { transform: translate(-50%, -50%) scale(3.2); opacity: 0;    }
+}
+.animate-water-ripple {
+  animation: water-ripple 0.75s ease-out forwards;
+}
+
 /* コースティック光: ゆっくり流れる光の斑 */
 @keyframes caustic-1 {
   0%,100% { transform: translate(0px,   0px)   scale(1);    }

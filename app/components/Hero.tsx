@@ -1,6 +1,7 @@
 import { Button } from './ui/button';
 import { BubbleParticles } from './BubbleParticles';
 import { WaveDecoration } from './WaveDecoration';
+import { WaterRipple } from './WaterRipple';
 
 export function Hero() {
   const scrollToSection = (id: string) => {
@@ -43,20 +44,24 @@ export function Hero() {
           </div>
           
           <div className="flex flex-wrap gap-4">
-            <Button 
-              size="lg"
-              className="bg-gradient-to-r from-[#FF6B8A] to-[#A855F7] hover:opacity-90 transition-opacity text-base sm:text-lg px-6 sm:px-8"
-            >
-              Connect Wallet
-            </Button>
-            <Button 
-              size="lg"
-              variant="outline"
-              onClick={() => scrollToSection('how-it-works')}
-              className="border-[#00E5FF]/30 text-white hover:bg-[#00E5FF]/10 text-base sm:text-lg px-6 sm:px-8"
-            >
-              Learn More
-            </Button>
+            <WaterRipple>
+              <Button
+                size="lg"
+                className="bg-gradient-to-r from-[#FF6B8A] to-[#A855F7] hover:opacity-90 transition-opacity text-base sm:text-lg px-6 sm:px-8"
+              >
+                Connect Wallet
+              </Button>
+            </WaterRipple>
+            <WaterRipple>
+              <Button
+                size="lg"
+                variant="outline"
+                onClick={() => scrollToSection('how-it-works')}
+                className="border-[#00E5FF]/30 text-white hover:bg-[#00E5FF]/10 text-base sm:text-lg px-6 sm:px-8"
+              >
+                Learn More
+              </Button>
+            </WaterRipple>
           </div>
         </div>
         
