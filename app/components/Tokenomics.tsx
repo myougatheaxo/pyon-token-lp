@@ -1,5 +1,4 @@
-import { useState } from 'react';
-import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip } from 'recharts';
+import { useState, useCallback, useRef } from 'react';
 import { useWaterRipple } from './useWaterRipple';
 
 const data = [
@@ -10,6 +9,33 @@ const data = [
   { name: 'Liquidity', value:  5, color: '#34D399' },
 ];
 
+// ── Donut chart geometry ───────────────────────────────────────────────────────
+const RAD = Math.PI / 180;
+const CX = 160, CY = 160, IR = 60, OR = 100;
+const total = data.reduce((s, d) => s + d.value, 0);
+
+const segments = (() => {
+  let a = -90; // 12 o'clock
+  return data.map((d) => {
+    const sweep = (d.value / total) * 360;
+    const start = a;
+    const end   = a + sweep - 2; // 2° gap
+    const mid   = start + (end - start) / 2;
+    a += sweep;
+    return { ...d, startAngle: start, endAngle: end, midAngle: mid };
+  });
+})();
+
+function arcPath(sa: number, ea: number): string {
+  const pt = (a: number, r: number) =>
+    [CX + r * Math.cos(a * RAD), CY + r * Math.sin(a * RAD)] as [number, number];
+  const [x1, y1] = pt(sa, OR), [x2, y2] = pt(ea, OR);
+  const [x3, y3] = pt(ea, IR), [x4, y4] = pt(sa, IR);
+  const lg = ea - sa > 180 ? 1 : 0;
+  return `M ${x1} ${y1} A ${OR} ${OR} 0 ${lg} 1 ${x2} ${y2} L ${x3} ${y3} A ${IR} ${IR} 0 ${lg} 0 ${x4} ${y4} Z`;
+}
+
+// ── Legend item ───────────────────────────────────────────────────────────────
 interface LegendItemProps {
   item: (typeof data)[0];
   index: number;
@@ -26,9 +52,9 @@ function LegendItem({ item, index, hoveredIndex, onHover, onLeave }: LegendItemP
   const isBelow   = hoveredIndex !== null && index > hoveredIndex;
 
   let transform = 'scale(1) translateY(0px)';
-  if (isHovered)     transform = 'scale(1.08) translateY(0px)';
-  else if (isAbove)  transform = 'scale(0.96) translateY(-9px)';
-  else if (isBelow)  transform = 'scale(0.96) translateY(9px)';
+  if (isHovered)    transform = 'scale(1.08) translateY(0px)';
+  else if (isAbove) transform = 'scale(0.96) translateY(-9px)';
+  else if (isBelow) transform = 'scale(0.96) translateY(9px)';
 
   return (
     <div
@@ -38,7 +64,6 @@ function LegendItem({ item, index, hoveredIndex, onHover, onLeave }: LegendItemP
       className="relative"
       style={{
         transform,
-        /* spring easing: わずかにオーバーシュートして水面らしい動きに */
         transition: 'transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1)',
         zIndex: isHovered ? 10 : 1,
       }}
@@ -59,8 +84,36 @@ function LegendItem({ item, index, hoveredIndex, onHover, onLeave }: LegendItemP
   );
 }
 
+// ── Chart ripple type ─────────────────────────────────────────────────────────
+interface ChartRipple { id: number; xPct: number; yPct: number; color: string; }
+let rippleId = 0;
+
+// ── Main component ────────────────────────────────────────────────────────────
 export function Tokenomics() {
-  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
+  const [activePie, setActivePie]       = useState<number | null>(null);
+  const [hoveredLegend, setHoveredLegend] = useState<number | null>(null);
+  const [chartRipples, setChartRipples] = useState<ChartRipple[]>([]);
+  const [tooltip, setTooltip]           = useState<{ name: string; value: number; color: string } | null>(null);
+
+  const handleSegmentEnter = useCallback((i: number) => {
+    setActivePie(i);
+    setTooltip({ name: data[i].name, value: data[i].value, color: data[i].color });
+
+    // Ripple at segment midpoint (SVG 320×320 → %)
+    const seg = segments[i];
+    const mr  = (IR + OR) / 2;
+    const xPct = ((CX + mr * Math.cos(seg.midAngle * RAD)) / 320) * 100;
+    const yPct = ((CY + mr * Math.sin(seg.midAngle * RAD)) / 320) * 100;
+
+    const id = rippleId++;
+    setChartRipples(prev => [...prev, { id, xPct, yPct, color: data[i].color }]);
+    setTimeout(() => setChartRipples(prev => prev.filter(r => r.id !== id)), 1600);
+  }, []);
+
+  const handleSegmentLeave = useCallback(() => {
+    setActivePie(null);
+    setTooltip(null);
+  }, []);
 
   return (
     <section className="relative py-32 px-6">
@@ -99,46 +152,72 @@ export function Tokenomics() {
             />
 
             <div className="relative grid lg:grid-cols-2 gap-12 items-center">
-              {/* Chart */}
-              <div className="h-[300px] sm:h-[400px]">
-                <ResponsiveContainer width="100%" height="100%">
-                  <PieChart>
-                    <Pie
-                      data={data}
-                      cx="50%"
-                      cy="50%"
-                      innerRadius={60}
-                      outerRadius={100}
-                      paddingAngle={2}
-                      dataKey="value"
-                    >
-                      {data.map((entry, index) => (
-                        <Cell key={`cell-${index}`} fill={entry.color} />
-                      ))}
-                    </Pie>
-                    <Tooltip
-                      contentStyle={{
-                        backgroundColor: '#ffffff',
-                        border: '1px solid #e5e7eb',
-                        borderRadius: '8px',
-                        color: '#111827',
-                        fontWeight: 600,
+              {/* ── Donut chart ── */}
+              <div className="relative h-[300px] sm:h-[400px] flex items-center justify-center">
+                <svg viewBox="0 0 320 320" className="w-full h-full max-w-[360px]">
+                  {segments.map((seg, i) => {
+                    const isActive = i === activePie;
+                    const hasActive = activePie !== null;
+                    const dx = isActive ? Math.cos(seg.midAngle * RAD) * 14 : 0;
+                    const dy = isActive ? Math.sin(seg.midAngle * RAD) * 14 : 0;
+
+                    return (
+                      <g
+                        key={i}
+                        style={{
+                          transform: `translate(${dx}px, ${dy}px)`,
+                          transition: 'transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1), filter 0.3s ease, opacity 0.3s ease',
+                          filter: isActive ? `drop-shadow(0 0 14px ${seg.color}aa)` : 'none',
+                          opacity: hasActive && !isActive ? 0.5 : 1,
+                          cursor: 'pointer',
+                        }}
+                        onMouseEnter={() => handleSegmentEnter(i)}
+                        onMouseLeave={handleSegmentLeave}
+                      >
+                        <path d={arcPath(seg.startAngle, seg.endAngle)} fill={seg.color} />
+                      </g>
+                    );
+                  })}
+                </svg>
+
+                {/* Tooltip */}
+                {tooltip && (
+                  <div
+                    className="absolute top-3 left-1/2 -translate-x-1/2 px-3 py-1.5 rounded-lg bg-white text-gray-900 text-sm font-semibold pointer-events-none shadow"
+                    style={{ border: `1.5px solid ${tooltip.color}` }}
+                  >
+                    {tooltip.name}: {tooltip.value}%
+                  </div>
+                )}
+
+                {/* Ripple overlay */}
+                <div className="absolute inset-0 pointer-events-none" style={{ overflow: 'visible' }}>
+                  {chartRipples.map(r => (
+                    <span
+                      key={r.id}
+                      className="absolute rounded-full animate-water-ripple"
+                      style={{
+                        left: `${r.xPct}%`,
+                        top:  `${r.yPct}%`,
+                        width: '60px',
+                        height: '60px',
+                        border: `1.5px solid ${r.color}99`,
                       }}
                     />
-                  </PieChart>
-                </ResponsiveContainer>
+                  ))}
+                </div>
               </div>
 
-              {/* Legend */}
+              {/* ── Legend ── */}
               <div className="space-y-4">
                 {data.map((item, index) => (
                   <LegendItem
                     key={index}
                     item={item}
                     index={index}
-                    hoveredIndex={hoveredIndex}
-                    onHover={setHoveredIndex}
-                    onLeave={() => setHoveredIndex(null)}
+                    hoveredIndex={hoveredLegend}
+                    onHover={setHoveredLegend}
+                    onLeave={() => setHoveredLegend(null)}
                   />
                 ))}
 
