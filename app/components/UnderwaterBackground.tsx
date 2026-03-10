@@ -10,13 +10,20 @@ interface Bubble {
 
 // マウント時に1回だけ生成（再レンダリング不要）
 function generateBubbles(count: number): Bubble[] {
-  return Array.from({ length: count }, (_, i) => ({
-    id: i,
-    x: Math.random() * 100,
-    size: Math.random() * 18 + 8,
-    duration: Math.random() * 18 + 12,
-    delay: Math.random() * 14,
-  }));
+  return Array.from({ length: count }, (_, i) => {
+    const duration = Math.random() * 18 + 12;
+    // 半数は負の遅延でページ読み込み時から画面中に表示
+    const delay = i < count / 2
+      ? -(Math.random() * duration)
+      : Math.random() * 8;
+    return {
+      id: i,
+      x: Math.random() * 100,
+      size: Math.random() * 18 + 8,
+      duration,
+      delay,
+    };
+  });
 }
 
 const BUBBLES = generateBubbles(32);
