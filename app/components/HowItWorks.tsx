@@ -11,7 +11,7 @@ export function HowItWorks() {
     {
       icon: Coins,
       title: 'Earn PYON',
-      description: 'Automatically receive PYON tokens proportional to your support',
+      description: 'Automatically receive PYON tokens proportional to your support ※技術的模索中',
       gradient: 'from-[#00E5FF] to-[#00E5FF]/50',
     },
     {
