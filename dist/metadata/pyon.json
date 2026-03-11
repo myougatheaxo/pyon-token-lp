@@ -1,0 +1,17 @@
+{
+  "name": "Pyon",
+  "symbol": "PYON",
+  "description": "Fan support token for AI VTuber Pyon (TropicalFishAItuber). Superchats come back to you as PYON tokens.",
+  "image": "https://myougatheaxo.github.io/pyon-token-lp/pyon.png",
+  "external_url": "https://myougatheaxo.github.io/pyon-token-lp/",
+  "attributes": [],
+  "properties": {
+    "files": [
+      {
+        "uri": "https://myougatheaxo.github.io/pyon-token-lp/pyon.png",
+        "type": "image/png"
+      }
+    ],
+    "category": "image"
+  }
+}
